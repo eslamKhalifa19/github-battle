@@ -32,6 +32,31 @@ LanguagesNav.propTypes = {
   onUpdateLanguage: PropTypes.func.isRequired,
 };
 
+function LangaugesNav({ selected, onUpdateLanguage }) {
+  const languages = ["All", "JavaScript", "Ruby", "Java", "CSS", "Python"];
+
+  return (
+    <ul className="flex-center">
+      {languages.map((language) => (
+        <li key={language}>
+          <button
+            className="btn-clear nav-link"
+            style={language === selected ? { color: "rgb(187, 46, 31)" } : null}
+            onClick={() => onUpdateLanguage(language)}
+          >
+            {language}
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+LangaugesNav.propTypes = {
+  selected: PropTypes.string.isRequired,
+  onUpdateLanguage: PropTypes.func.isRequired,
+};
+
 function ReposGrid({ repos }) {
   return (
     <ul className="grid space-around">
@@ -47,8 +72,8 @@ function ReposGrid({ repos }) {
         const { login, avatar_url } = owner;
 
         return (
-          <li key={html_url} className="repo bg-light">
-            <h4 className="header-lg center-text">#{index + 1}+</h4>
+          <li key={html_url} className="card bg-light">
+            <h4 className="header-lg center-text">#{index + 1}</h4>
             <img
               className="avatar"
               src={avatar_url}
@@ -87,6 +112,7 @@ function ReposGrid({ repos }) {
 ReposGrid.propTypes = {
   repos: PropTypes.array.isRequired,
 };
+
 export default class Popular extends React.Component {
   constructor(props) {
     super(props);
@@ -96,6 +122,7 @@ export default class Popular extends React.Component {
       repos: {},
       error: null,
     };
+
     this.updateLanguage = this.updateLanguage.bind(this);
     this.isLoading = this.isLoading.bind(this);
   }
@@ -107,6 +134,7 @@ export default class Popular extends React.Component {
       selectedLanguage,
       error: null,
     });
+
     if (!this.state.repos[selectedLanguage]) {
       fetchPopularRepos(selectedLanguage)
         .then((data) => {
@@ -117,29 +145,34 @@ export default class Popular extends React.Component {
             },
           }));
         })
-        .catch(() => {
-          console.warn("Error fetching repos", error);
+        .catch((error) => {
+          console.warn("Error fetching repos: ", error);
+
           this.setState({
-            error: "There was an error fetching the repositories",
+            error: `There was an error fetching the repositories.`,
           });
         });
     }
   }
   isLoading() {
     const { selectedLanguage, repos, error } = this.state;
+
     return !repos[selectedLanguage] && error === null;
   }
-
   render() {
     const { selectedLanguage, repos, error } = this.state;
+
     return (
       <React.Fragment>
-        <LanguagesNav
+        <LangaugesNav
           selected={selectedLanguage}
           onUpdateLanguage={this.updateLanguage}
-        ></LanguagesNav>
+        />
+
         {this.isLoading() && <p>LOADING</p>}
-        {error && <p>error</p>}
+
+        {error && <p className="center-text error">{error}</p>}
+
         {repos[selectedLanguage] && (
           <ReposGrid repos={repos[selectedLanguage]} />
         )}
