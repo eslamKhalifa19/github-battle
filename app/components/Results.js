@@ -5,12 +5,14 @@ import {
   FaBriefcase,
   FaUsers,
   FaUserFriends,
+  FaCode,
   FaUser,
 } from "react-icons/fa";
 import Card from "./Card";
-import Loading from "./Loading";
 import PropTypes from "prop-types";
-import Tooltip from "./Tooltip";
+import Loading from "./Loading";
+import Tooltip from "./ToolTip";
+
 function ProfileList({ profile }) {
   return (
     <ul className="card-list">
@@ -20,7 +22,7 @@ function ProfileList({ profile }) {
       </li>
       {profile.location && (
         <li>
-          <Tooltip text="User Location">
+          <Tooltip text="User's location">
             <FaCompass color="rgb(144, 115, 255)" size={22} />
             {profile.location}
           </Tooltip>
@@ -28,7 +30,7 @@ function ProfileList({ profile }) {
       )}
       {profile.company && (
         <li>
-          <Tooltip text="User Company">
+          <Tooltip text="User's company">
             <FaBriefcase color="#795548" size={22} />
             {profile.company}
           </Tooltip>
@@ -84,7 +86,7 @@ export default class Results extends React.Component {
     const { winner, loser, error, loading } = this.state;
 
     if (loading === true) {
-      return <Loading text="Battling" speed={100} />;
+      return <Loading text="Battling" />;
     }
 
     if (error) {
@@ -92,24 +94,23 @@ export default class Results extends React.Component {
     }
 
     return (
-      <>
+      <React.Fragment>
         <div className="grid space-around container-sm">
           <Card
             header={winner.score === loser.score ? "Tie" : "Winner"}
             subheader={`Score: ${winner.score.toLocaleString()}`}
             avatar={winner.profile.avatar_url}
             href={winner.profile.html_url}
-            name={winner.profile.name}
+            name={winner.profile.login}
           >
             <ProfileList profile={winner.profile} />
           </Card>
-
           <Card
             header={winner.score === loser.score ? "Tie" : "Loser"}
             subheader={`Score: ${loser.score.toLocaleString()}`}
             avatar={loser.profile.avatar_url}
+            name={loser.profile.login}
             href={loser.profile.html_url}
-            name={loser.profile.name}
           >
             <ProfileList profile={loser.profile} />
           </Card>
@@ -117,7 +118,7 @@ export default class Results extends React.Component {
         <button onClick={this.props.onReset} className="btn dark-btn btn-space">
           Reset
         </button>
-      </>
+      </React.Fragment>
     );
   }
 }
