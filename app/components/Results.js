@@ -11,8 +11,8 @@ import {
 import Card from "./Card";
 import PropTypes from "prop-types";
 import Loading from "./Loading";
-import Tooltip from "./Tooltip";
-import queryString from "query-string";
+import Tooltip from "./ToolTip";
+import queryString from "querystring";
 import { Link } from "react-router-dom";
 
 function ProfileList({ profile }) {
