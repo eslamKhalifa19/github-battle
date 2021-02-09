@@ -6,7 +6,6 @@ import {
   FaTimesCircle,
 } from "react-icons/fa";
 import PropTypes from "prop-types";
-import Results from "./Results";
 import { ThemeConsumer } from "../contexts/theme";
 import { Link } from "react-router-dom";
 
@@ -14,26 +13,30 @@ function Instructions() {
   return (
     <ThemeConsumer>
       {({ theme }) => (
-        <div className="instruction-container">
+        <div className="instructions-container">
           <h1 className="center-text header-lg">Instructions</h1>
           <ol className="container-sm grid center-text battle-instructions">
             <li>
               <h3 className="header-sm">Enter two Github users</h3>
               <FaUserFriends
-                className="bg-light"
-                color="rgb(255,191,116)"
+                className={`bg-${theme}`}
+                color="rgb(255, 191, 116)"
                 size={140}
               />
             </li>
             <li>
               <h3 className="header-sm">Battle</h3>
-              <FaFighterJet className="bg-light" color="#727272" size={140} />
+              <FaFighterJet
+                className={`bg-${theme}`}
+                color="#727272"
+                size={140}
+              />
             </li>
             <li>
               <h3 className="header-sm">See the winners</h3>
               <FaTrophy
-                className="bg-light"
-                color="rgb(255,215,0)"
+                className={`bg-${theme}`}
+                color="rgb(255, 215, 0)"
                 size={140}
               />
             </li>
@@ -47,23 +50,24 @@ function Instructions() {
 class PlayerInput extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       username: "",
     };
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
   handleSubmit(event) {
     event.preventDefault();
+
     this.props.onSubmit(this.state.username);
   }
-
   handleChange(event) {
     this.setState({
       username: event.target.value,
     });
   }
-
   render() {
     return (
       <ThemeConsumer>
@@ -142,18 +146,16 @@ export default class Battle extends React.Component {
     this.state = {
       playerOne: null,
       playerTwo: null,
-      battle: false,
     };
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
-
   handleSubmit(id, player) {
     this.setState({
       [id]: player,
     });
   }
-
   handleReset(id) {
     this.setState({
       [id]: null,
