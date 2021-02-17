@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 function Instructions() {
   return (
     <ThemeConsumer>
-      {({ theme }) => (
+      {(theme) => (
         <div className="instructions-container">
           <h1 className="center-text header-lg">Instructions</h1>
           <ol className="container-sm grid center-text battle-instructions">
@@ -64,7 +64,7 @@ class PlayerInput extends React.Component {
   render() {
     return (
       <ThemeConsumer>
-        {({ theme }) => (
+        {(theme) => (
           <form className="column player" onSubmit={this.handleSubmit}>
             <label htmlFor="username" className="player-label">
               {this.props.label}
@@ -102,7 +102,7 @@ PlayerInput.propTypes = {
 function PlayerPreview({ username, onReset, label }) {
   return (
     <ThemeConsumer>
-      {({ theme }) => (
+      {(theme) => (
         <div className="column player">
           <h3 className="player-label">{label}</h3>
           <div className={`row bg-${theme}`}>
